@@ -61,7 +61,7 @@ def main():
 
     # Ejemplo de reserva: Juan reserva Instrumentation con Oscilloscope y Multimeter
     controller.concurrent_ramdom_bookings([1,2,4,5])
-    #controller.show_bookings()
+    controller.show_bookings()
     controller.show_pending_bookings_graph()
 
 if __name__ == "__main__":

@@ -41,11 +41,15 @@ class University:
 
         if room is not None:
             while True:
-                print(f"[DEBUG] Checking room {room.id} status: {room.status}")
-                print(f"[DEBUG)] Room {room.id} available: {room.is_available()}")
+                #print(f"[DEBUG] Checking room {room.id} status: {room.status}")
+                #print(f"[DEBUG)] Room {room.id} available: {room.is_available()}")
                 if room.is_available():
                     print(f"[DEBUG] Booking room {room.id}")
-                    room.to_book()
+                    try:
+                        room.to_book()
+                    except ValueError as e:
+                        print(f"[DEBUG] Error booking room {room.id}: {e}")
+                        continue
                     return room.id
                 elif time() - start_time > 5:  # Timeout
                     print(f"[DEBUG] Timeout booking room {room.id}")
@@ -75,10 +79,14 @@ class University:
             for tool_id in tool_ids_copy:
                 for tool in self.laboratory_tools:
                     if tool.id == tool_id:
-                        print(f"[DEBUG] Checking tool {tool.id} status: {tool.status}")
+                        #print(f"[DEBUG] Checking tool {tool.id} status: {tool.status}")
                         if tool.is_available():
                             print(f"[DEBUG] Booking tool {tool.id} for booking {booking.booking_id}")
-                            tool.to_book()
+                            try:
+                                tool.to_book()
+                            except ValueError as e:
+                                print(f"[DEBUG] Error booking tool {tool.id}: {e}")
+                                continue    
                             booking.add_tool(tool_id)
                             tool_ids_copy.remove(tool_id)
             if time() - start_time > 5:  # Timeout
@@ -90,6 +98,11 @@ class University:
             print(f"[DEBUG] Booking {booking.booking_id} approved")
             booking.approve()
             self.use_booking(booking.booking_id)
+            return booking.booking_id
+        
+        if booking.status == StatusBooking.PENDING:
+            print(f"[DEBUG] Booking {booking.booking_id} pending, no tools available")
+            booking.reject()
             return booking.booking_id
 
     def use_booking(self, booking_id: int):
@@ -174,7 +187,7 @@ class University:
         """Returns a list of pending bookings."""
         pending_bookings = []
         for booking in self.bookings:
-            if booking.status != StatusBooking.APPROVED:
+            if booking.status != StatusBooking.FINISHED:
                 print(f"[DEBUG] Found pending booking {booking.booking_id} with status {booking.status}")
                 pending_bookings.append(booking)   
         return pending_bookings                    
@@ -192,14 +205,14 @@ class University:
             laboratory = next((l for l in self.laboratories if l.id == booking.room_id), None)
             tools = [tool for tool in self.laboratory_tools if tool.id in booking.tool_ids]
             details.append({
+                "booking_id": booking.booking_id,
                 "student": student,
                 "laboratory": laboratory,
                 "tools": tools,
-                "status": booking.status
+                "status": booking.status.name
             })
         return details
 
-    
     
     def __str__(self):
         return f"University with {len(self.laboratories)} laboratories, {len(self.laboratory_tools)} tools, and {len(self.bookings)} bookings."

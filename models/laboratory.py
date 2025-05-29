@@ -10,6 +10,8 @@ class Laboratory():
 
     def to_book(self):
         """Changes the status of the laboratory to BOOKED."""
+        if self.status != Status.AVAILABLE:
+            raise ValueError("Laboratory is not available for booking")
         self.status = Status.RESERVERD
 
     def to_use(self):
