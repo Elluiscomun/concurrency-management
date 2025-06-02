@@ -1,4 +1,5 @@
 from .status_source import Status
+from threading import Lock
 
 class Laboratory():
     """Represents a laboratory with tools and its status."""
@@ -7,6 +8,8 @@ class Laboratory():
         self.name = name
         self.id = id
         self.tools = tools
+        
+        self.lock = Lock()
 
     def to_book(self):
         """Changes the status of the laboratory to BOOKED."""

@@ -1,11 +1,12 @@
 from views.university_view import show_booking_result
 from views.pending_bookings_graph import PendingBookingsGraph
+from views.booking_stats_table import BookingStatsTable
 import threading
 from models.university import University
 
 class UniversityController:
     """Controller for managing university lab bookings."""
-    def __init__(self, university: University):
+    def __init__(self, university):
         self.university = university
 
     def book_lab(self, student_id, room_id, tool_ids):
@@ -39,6 +40,13 @@ class UniversityController:
         )
         graph.build_graph()
         graph.draw()
+
+    def show_booking_stats(self):
+        """Displays booking statistics in a table format."""
+        booking_details = self.university.get_all_booking_details()
+        stats_table = BookingStatsTable(booking_details)
+        stats_table.show_stats()
+        show_booking_result(self.university.get_booking_stats())      
         
     def concurrent_ramdom_bookings(self, studens_ids):
         """Creates multiple threads to book laboratories concurrently for a list of students."""

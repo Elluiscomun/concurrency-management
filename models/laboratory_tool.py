@@ -1,4 +1,5 @@
 from .status_source import Status 
+from threading import Lock
 
 class LaboratoryTool:
     """Represents a laboratory tool with its name, ID, and status."""
@@ -6,6 +7,9 @@ class LaboratoryTool:
         self.status: Status = Status.AVAILABLE
         self.name = name
         self.id = id
+
+        self.lock = Lock()
+        
 
     def to_book(self):
         if self.status != Status.AVAILABLE:

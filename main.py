@@ -1,4 +1,10 @@
 from models.university import University
+from models.concurrence_control.university_mutex_abroad import UniversityMutexAbroad
+from models.concurrence_control.university_mutex import UniversityMutex
+from models.concurrence_control.university_release import UniversityRelease
+from models.concurrence_control.university_prevention import UniversityPrevention
+from models.concurrence_control.university_banker import UniversityBanker
+
 from models.laboratory import Laboratory
 from models.laboratory_tool import LaboratoryTool
 from models.student import Student
@@ -43,7 +49,7 @@ def main():
         ]),
     ]
 
-    students = [
+    """students = [
         Student("Juan", 1),
         Student("Maria", 2),
         Student("Luis", 3),
@@ -54,15 +60,24 @@ def main():
         Student("Lucia", 8),
         Student("Miguel", 9),
         Student("Elena", 10),
-    ]
+    ]"""
 
-    university = University(labs, tools, students)
+    n = 100  # Cambia este valor para la cantidad de estudiantes que desees
+
+    students = [Student(f"Student_{i+1}", i+1) for i in range(n)]
+
+    #university = UniversitySorted(labs, tools, students)
+    #university = UniversityRelease(labs, tools, students)
+    #university = University(labs, tools, students)
+    #university = UniversityMutexAbroad(labs, tools, students)
+    #university = UniversityPrevention(labs, tools, students)
+    university = UniversityBanker(labs, tools, students)
+
     controller = UniversityController(university)
 
-    # Ejemplo de reserva: Juan reserva Instrumentation con Oscilloscope y Multimeter
-    controller.concurrent_ramdom_bookings([1,2,4,5])
-    controller.show_bookings()
-    controller.show_pending_bookings_graph()
+    controller.concurrent_ramdom_bookings([(i+1) for i in range(n)])
+    #controller.show_pending_bookings_graph()
+    controller.show_booking_stats()
 
 if __name__ == "__main__":
     main()
