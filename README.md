@@ -23,7 +23,10 @@ pip install -r requirements.txt
 
 ## Uso
 
-1. Ejecuta el archivo principal de la aplicación (python `main.py`).
+1. Ejecuta el archivo principal de la aplicación 
+```sh 
+python main.py 
+```
 2. Selecciona una o varias clases de simulación.
 3. Define el número de alumnos y de iteraciones.
 4. Haz clic en **Comparar** para ejecutar la simulación.
