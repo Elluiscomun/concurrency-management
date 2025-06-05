@@ -51,12 +51,13 @@ class UniversityMutex(University):
                                 booking.add_tool(tool_id)
                                 tool_ids_copy.remove(tool_id)
             if time() - start_time > 5:  # Timeout
-                #print(f"[DEBUG] Timeout booking tools for booking {booking.booking_id}")
+                print(f"[DEBUG] Timeout booking tools for booking {booking.booking_id}")
                 booking.reject()
+                self.release_booking(booking_id=booking.booking_id)
                 return booking.booking_id                
 
         if not tool_ids:
-            #print(f"[DEBUG] Booking {booking.booking_id} approved")
+            print(f"[DEBUG] Booking {booking.booking_id} approved")
             booking.approve()
             self.use_booking(booking.booking_id)
             return booking.booking_id

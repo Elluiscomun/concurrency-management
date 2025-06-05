@@ -32,7 +32,7 @@ class UniversityBanker(University):
         self.booking_id_counter += 1
         booking = Booking(user_id=student_id, booking_id=self.booking_id_counter,
                           room_id_solicited=room_id, tool_ids_solicited=tool_ids)
-        print(f"[DEBUG] Boking Created: {booking.booking_id}")
+        #print(f"[DEBUG] Boking Created: {booking.booking_id}")
         self.bookings.append(booking)
 
         # Construir solicitud
@@ -71,7 +71,7 @@ class UniversityBanker(University):
 
         # Paso 4: Aprobar y usar reserva
         booking.approve()
-        print(f"[DEBUG] Booking aprobado: {booking.booking_id}")
+        #print(f"[DEBUG] Booking aprobado: {booking.booking_id}")
         self.use_booking(booking.booking_id)
 
         return booking.booking_id

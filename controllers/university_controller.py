@@ -9,6 +9,10 @@ class UniversityController:
     def __init__(self, university):
         self.university = university
 
+    def change_university(self, university):
+        """Changes the university instance."""
+        self.university = university
+
     def book_lab(self, student_id, room_id, tool_ids):
         """Books a laboratory room and tools for a student."""
         id = self.university.to_book(student_id, room_id, tool_ids)
@@ -47,7 +51,12 @@ class UniversityController:
         stats_table = BookingStatsTable(booking_details)
         stats_table.show_stats()
         show_booking_result(self.university.get_booking_stats())      
-        
+
+    def get_statistics(self):
+        """Returns the booking statistics."""
+        show_booking_result(self.university.get_booking_stats())
+        return self.university.get_booking_stats()
+
     def concurrent_ramdom_bookings(self, studens_ids):
         """Creates multiple threads to book laboratories concurrently for a list of students."""
         threads = []

@@ -8,7 +8,7 @@ class LaboratoryTool:
         self.name = name
         self.id = id
 
-        self.lock = Lock()
+        #self.lock = Lock()
         
 
     def to_book(self):

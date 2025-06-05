@@ -10,6 +10,8 @@ from models.laboratory_tool import LaboratoryTool
 from models.student import Student
 from controllers.university_controller import UniversityController
 
+from views.simulation_gui import SimulationGUI
+
 def main():
     """Main function to run the university booking system."""
 
@@ -62,7 +64,7 @@ def main():
         Student("Elena", 10),
     ]"""
 
-    n = 100  # Cambia este valor para la cantidad de estudiantes que desees
+    n = 1  # Cambia este valor para la cantidad de estudiantes que desees
 
     students = [Student(f"Student_{i+1}", i+1) for i in range(n)]
 
@@ -73,11 +75,20 @@ def main():
     #university = UniversityPrevention(labs, tools, students)
     university = UniversityBanker(labs, tools, students)
 
-    controller = UniversityController(university)
+    #controller = UniversityController(university)
 
-    controller.concurrent_ramdom_bookings([(i+1) for i in range(n)])
+    #controller.concurrent_ramdom_bookings([(i+1) for i in range(n)])
     #controller.show_pending_bookings_graph()
-    controller.show_booking_stats()
+    #controller.show_booking_stats()
+
+
+    university_classes = [
+        University, UniversityMutexAbroad, UniversityMutex,
+        UniversityRelease, UniversityPrevention, UniversityBanker
+    ]
+    controller = UniversityController(university)
+    gui = SimulationGUI(controller, university_classes)
+    gui.run()
 
 if __name__ == "__main__":
-    main()
+    main()   

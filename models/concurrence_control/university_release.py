@@ -9,11 +9,11 @@ class UniversityRelease(University):
         self.booking_id_counter += 1
         booking = Booking(user_id=student_id, booking_id=self.booking_id_counter, room_id_solicited=room_id, tool_ids_solicited=tool_ids)
         self.bookings.append(booking)
-        print(f"[DEBUG] Creating booking {booking.booking_id} for student {student_id}")
+        #print(f"[DEBUG] Creating booking {booking.booking_id} for student {student_id}")
 
         room_id = self.book_room(room_id)
         if room_id == 0:
-            print(f"[DEBUG] Booking {booking.booking_id} rejected: room unavailable")
+            #print(f"[DEBUG] Booking {booking.booking_id} rejected: room unavailable")
             booking.reject()
             return booking.booking_id
         
@@ -51,7 +51,7 @@ class UniversityRelease(University):
             self.use_booking(booking.booking_id)
 
         if booking.get_status() == "PENDING":
-            print(f"[DEBUG] Booking {booking.booking_id} pending, no tools available")
+            #print(f"[DEBUG] Booking {booking.booking_id} pending, no tools available")
             booking.reject()
         
         return booking.booking_id

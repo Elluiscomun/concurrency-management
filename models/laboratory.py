@@ -9,7 +9,7 @@ class Laboratory():
         self.id = id
         self.tools = tools
         
-        self.lock = Lock()
+        #self.lock = Lock()
 
     def to_book(self):
         """Changes the status of the laboratory to BOOKED."""
