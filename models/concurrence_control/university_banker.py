@@ -32,7 +32,6 @@ class UniversityBanker(University):
         self.booking_id_counter += 1
         booking = Booking(user_id=student_id, booking_id=self.booking_id_counter,
                           room_id_solicited=room_id, tool_ids_solicited=tool_ids)
-        #print(f"[DEBUG] Boking Created: {booking.booking_id}")
         self.bookings.append(booking)
 
         # Construir solicitud
@@ -71,30 +70,22 @@ class UniversityBanker(University):
 
         # Paso 4: Aprobar y usar reserva
         booking.approve()
-        #print(f"[DEBUG] Booking aprobado: {booking.booking_id}")
         self.use_booking(booking.booking_id)
 
         return booking.booking_id
 
     def release_booking(self, booking_id: int):
-        #print(f"[DEBUG] Intentando liberar booking con ID: {booking_id}")
         booking = self.get_booking_by_id(booking_id)
-        #print(f"[DEBUG] Estado del booking: {booking.get_status()}")
         if booking.get_status() == "FINISHED":
             for lab in self.laboratories:
                 if lab.id == booking.room_id:
-                    #print(f"[DEBUG] Liberando laboratorio con ID: {lab.id}")
                     lab.release()
 
             for tool_id in booking.tool_ids:
                 for tool in self.laboratory_tools:
                     if tool.id == tool_id:
-                        #print(f"[DEBUG] Liberando herramienta con ID: {tool.id}")
                         tool.release()
 
-            #print(f"[DEBUG] Liberando recursos del banquero para usuario: {booking.user_id}")
             self.banker.release_resources(booking.user_id)
-            #print(f"[DEBUG] Booking {booking_id} liberado correctamente.")
             return True
-        #print(f"[DEBUG] Booking {booking_id} no está en estado FINISHED. No se libera.")
         return False
